@@ -6,6 +6,7 @@
   "scripts": {
     "build": "tsc",
     "pretest": "yarn build",
+    "prepare": "yarn build",
     "test": "mocha test/**/*-test.js --trace-deprecation --timeout=30000",
     "doc": "typedoc --mode file --out docs/ --ignoreCompilerErrors"
   },
