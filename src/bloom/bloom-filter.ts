@@ -55,29 +55,18 @@ export default class BloomFilter extends BaseFilter implements ClassicFilter<Has
 
   /**
    * Constructor
-   * @param filter - The filter as an array of 1s & 0s
+   * @param size - The number of cells
    * @param nbHashes - The number of hash functions used
    */
-  constructor (@Parameter('_filter') filter: Array<number>, @Parameter('_nbHashes') nbHashes: number) {
+  constructor (@Parameter('_size') size: number, @Parameter('_nbHashes') nbHashes: number) {
     super()
     if (nbHashes < 1) {
       throw new Error(`A BloomFilter cannot uses less than one hash function, while you tried to use ${nbHashes}.`)
     }
-    this._size = filter.length
+    this._size = size
     this._nbHashes = nbHashes
-    this._filter = filter
+    this._filter = allocateArray(this._size, 0)
     this._length = 0
-  }
-
-  /**
-   * Create an optimal bloom filter providing the maximum of elements stored and the error rate desired
-   * @param size - The number of cells
-   * @param nbHashes - The number of hash functions used
-   * @return A new {@link BloomFilter}
-   */
-  static empty (size: number, nbHashes: number): BloomFilter {
-    const filter = allocateArray(size, 0)
-    return new BloomFilter(filter, nbHashes)
   }
 
   /**
@@ -89,8 +78,7 @@ export default class BloomFilter extends BaseFilter implements ClassicFilter<Has
   static create (nbItems: number, errorRate: number): BloomFilter {
     const size = optimalFilterSize(nbItems, errorRate)
     const hashes = optimalHashes(size, nbItems)
-    const filter = allocateArray(size, 0)
-    return new BloomFilter(filter, hashes)
+    return new BloomFilter(size, hashes)
   }
 
   /**
@@ -115,13 +103,16 @@ export default class BloomFilter extends BaseFilter implements ClassicFilter<Has
    * @param nbHashes - The number of hash functions used
    * @return A {@link BloomFilter} from the bytes array
    */
+
   static fromBytes(bytes: Uint8Array, nbHashes: number) {
-    let filter = [] as number[]
+    let bits = [] as number[]
     for(let i = 0; i < bytes.length; i++) {
-      const bits = uint8ToBits(bytes[i])
-      filter = filter.concat(bits)
+      const slice = uint8ToBits(bytes[i])
+      bits = bits.concat(slice)
     }
-    return new BloomFilter(filter, nbHashes)
+    const filter = new BloomFilter(bits.length, nbHashes)
+    filter._filter = bits
+    return filter
   }
 
   /**

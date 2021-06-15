@@ -26,7 +26,6 @@ SOFTWARE.
 
 require('chai').should()
 const { BloomFilter } = require('../dist/api.js')
-const { uint8ToBits, bitsToUint8 } = require('../dist/utils.js')
 
 describe('BloomFilter', () => {
   const targetRate = 0.1
@@ -75,14 +74,14 @@ describe('BloomFilter', () => {
     })
 
     it('should returns False when two filters have different sizes', () => {
-      const first = BloomFilter.empty(15, 4)
-      const other = BloomFilter.empty(10, 4)
+      const first = new BloomFilter(15, 4)
+      const other = new BloomFilter(10, 4)
       first.equals(other).should.equal(false)
     })
 
     it('should returns False when two filters have different nb. of hash functions', () => {
-      const first = BloomFilter.empty(15, 4)
-      const other = BloomFilter.empty(15, 2)
+      const first = new BloomFilter(15, 4)
+      const other = new BloomFilter(15, 2)
       first.equals(other).should.equal(false)
     })
 
