@@ -135,8 +135,8 @@ describe('BloomFilter', () => {
     })
   })
 
-  describe('Import/Export from buffers', () => {
-    const filter = BloomFilter.empty(128, 8)
+  describe('Import/Export from bytes', () => {
+    const filter = new BloomFilter(128, 8)
     filter.add('test')
     filter.add('another')
     filter.add('one more')

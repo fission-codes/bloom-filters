@@ -115,7 +115,6 @@ export default class BloomFilter extends BaseFilter implements ClassicFilter<Has
    * @param nbHashes - The number of hash functions used
    * @return A {@link BloomFilter} from the bytes array
    */
-
   static fromBytes(bytes: Uint8Array, nbHashes: number) {
     let filter = [] as number[]
     for(let i = 0; i < bytes.length; i++) {

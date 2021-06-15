@@ -1,6 +1,6 @@
 {
   "name": "fission-bloom-filters",
-  "version": "1.6.1",
+  "version": "1.7.1",
   "description": "JS implementation of probabilistic data structures: Bloom Filter (and its derived), HyperLogLog, Count-Min Sketch, Top-K and MinHash",
   "main": "dist/api.js",
   "types": "dist/api.d.ts",
@@ -27,8 +27,8 @@
   ],
   "author": "Daniel Holmgren <daniel@fission.codes",
   "contributors": [
-    "Thomas Minier <thomas.minier@protonmail.com>",
-    "Arnaud Grall <dev.arnaudgrall@gmail.com>"
+    "Arnaud Grall <dev.arnaudgrall@gmail.com>",
+    "Jonah H. Harris <jonah.harris@gmail.com>"
   ],
   "license": "MIT",
   "bugs": {
