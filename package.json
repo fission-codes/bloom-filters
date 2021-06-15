@@ -3,6 +3,7 @@
   "version": "1.6.1",
   "description": "JS implementation of probabilistic data structures: Bloom Filter (and its derived), HyperLogLog, Count-Min Sketch, Top-K and MinHash",
   "main": "dist/api.js",
+  "types": "dist/api.d.ts",
   "scripts": {
     "build": "tsc",
     "pretest": "yarn build",
