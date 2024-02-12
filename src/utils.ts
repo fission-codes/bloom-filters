@@ -173,28 +173,34 @@ export function doubleHashing (n: number, hashA: number, hashB: number, size: nu
  * @param  seed     - The seed used
  * @return A array of indexes
  * @author Arnaud Grall
+ * @author Simon Woolf (SimonWoolf)
  */
 export function getDistinctIndices (element: HashableInput, size: number, number: number, seed?: number): Array<number> {
   if (seed === undefined) {
     seed = getDefaultSeed()
   }
-  function getDistinctIndicesBis (n: number, elem: HashableInput, size: number, count: number, indexes: Array<number> = []): Array<number> {
-    if (indexes.length === count) {
-      return indexes
-    } else {
-      const hashes = hashTwice(elem, true, seed! + size % n)
-      const ind = doubleHashing(n, hashes.first, hashes.second, size)
-      if (indexes.includes(ind)) {
-        // console.log('generate index: %d for %s', ind, elem)
-        return getDistinctIndicesBis(n + 1, elem, size, count, indexes)
-      } else {
-        // console.log('already found: %d for %s', ind, elem)
-        indexes.push(ind)
-        return getDistinctIndicesBis(n + 1, elem, size, count, indexes)
-      }
+
+  const indexes = new Set<number>()
+  let n = 0
+  let hashes = hashTwice(element, true, seed)
+
+  while (indexes.size < number) {
+    const ind = hashes.first % size
+    if (!indexes.has(ind)) {
+      indexes.add(ind)
+    }
+
+    hashes.first = (hashes.first + hashes.second) % size
+    hashes.second = (hashes.second + n) % size
+    n++
+
+    if (n > size) {
+      seed++
+      hashes = hashTwice(element, true, seed)
     }
   }
-  return getDistinctIndicesBis(1, element, size, number)
+
+  return [...indexes.values()]
 }
 
 /**
